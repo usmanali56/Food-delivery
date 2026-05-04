@@ -1,0 +1,69 @@
+/* 1. Basic Container & Form Setup */
+.add {
+    width: 70%;
+    margin-left: max(5vw, 25px);
+    margin-top: 50px;
+    color: #6d6d6d;
+    font-size: 16px;
+}
+
+.add form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 2. Border Visibility (Sab inputs par apply hoga) */
+.add input, 
+.add textarea, 
+.add select {
+    padding: 10px;
+    border: 1px solid #a9a9a9; /* Border hamesha dikhega */
+    border-radius: 4px;
+    outline: none;
+    background-color: white;
+}
+
+/* Jab input par click karein (Focus state) */
+.add input:focus, 
+.add textarea:focus, 
+.add select:focus {
+    border: 1px solid #000; /* Click karne par border dark ho jayega */
+}
+
+/* 3. Width for Name and Description */
+.add-product-name, 
+.add-product-description {
+    width: max(40%, 280px);
+}
+
+/* 4. Horizontal Alignment (Category & Price) */
+.add-category-price {
+    display: flex;
+    flex-direction: row; /* Inhe ek line mein layega */
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Ye important hai: Taake andar ke label/input vertical rahein */
+.add-category-price > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 5. Same Height & Width for Select and Price Input */
+.add-category-price select, 
+.add-price input {
+    width: 140px; 
+    height: 42px; /* Height exact same kar di */
+    box-sizing: border-box; /* Padding height ko disturb nahi karegi */
+}
+.add-btn{
+    max-width: 120x;
+    border: none;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
