@@ -1,4 +1,10 @@
 import mongoose from "mongoose";
- export const connectDB=async ()=>{
-    await mongoose.connect('mongodb+srv://finalyear:87654321@cluster0.i4dzfnx.mongodb.net/food-del').then(()=>console.log("db connected"))
-}
+
+export const connectDB = async () => {
+  const uri = process.env.MONGO_URI;
+  if (!uri) {
+    throw new Error("MONGO_URI is not set in environment variables");
+  }
+  await mongoose.connect(uri);
+  console.log("db connected");
+};

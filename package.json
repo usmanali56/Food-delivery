@@ -1,9 +1,17 @@
 {
   "name": "food-del",
   "private": true,
-  "description": "Food delivery MERN monorepo",
+  "description": "Food delivery — single deploy (API + customer + admin)",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "build": "npm run build --prefix frontend",
-    "vercel-build": "npm run build --prefix frontend"
+    "build:frontend": "npm install --prefix frontend && npm run build --prefix frontend",
+    "build:admin": "npm install --prefix admin/admin && npm run build --prefix admin/admin",
+    "build:backend": "npm install --prefix backend",
+    "build": "npm run build:backend && npm run build:frontend && npm run build:admin",
+    "start": "node backend/src/production.js",
+    "dev:api": "npm run dev --prefix backend"
   }
 }

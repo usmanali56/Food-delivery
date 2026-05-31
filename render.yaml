@@ -1,17 +1,16 @@
-# Deploy the API on Render (Express + MongoDB). Vercel is for the React frontend only.
+# One Render web service: API + customer site + admin panel
 services:
   - type: web
-    name: food-del-api
+    name: food-delivery
     runtime: node
-    rootDir: backend
-    buildCommand: npm install
+    buildCommand: npm run build
     startCommand: npm start
     envVars:
       - key: NODE_VERSION
         value: "20"
       - key: MONGO_URI
         sync: false
-      - key: CLIENT_ORIGIN
+      - key: JWT_SECRET
         sync: false
-      - key: PORT
-        value: "10000"
+      - key: STRIPE_SECRET_KEY
+        sync: false
