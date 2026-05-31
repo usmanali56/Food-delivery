@@ -1,0 +1,9 @@
+{
+  "name": "food-del",
+  "private": true,
+  "description": "Food delivery MERN monorepo",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "vercel-build": "npm run build --prefix frontend"
+  }
+}
