@@ -12,6 +12,7 @@
     "build:backend": "npm install --prefix backend",
     "build": "npm run build:backend && npm run build:frontend && npm run build:admin",
     "start": "node backend/src/production.js",
-    "dev:api": "npm run dev --prefix backend"
+    "dev:api": "npm run dev --prefix backend",
+    "vercel-build": "npm install --prefix backend && npm run build --prefix frontend"
   }
 }
