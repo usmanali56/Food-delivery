@@ -1,8 +1,9 @@
 /**
- * Vercel serverless entry — customer API (/api/health, /api/food, /api/orders).
+ * Vercel serverless — uses MongoDB when MONGO_URI is set, otherwise demo mode (no config needed).
  */
 import { connectDatabase } from "../backend/src/config/database.js";
 import { createApp } from "../backend/src/app.js";
+import { createDemoApp } from "../backend/src/demoApp.js";
 import { seedFoodsIfEmpty } from "../backend/src/seed/seedFoods.js";
 
 export const config = {
@@ -11,30 +12,34 @@ export const config = {
 
 let app;
 let initPromise;
+let demoMode = false;
 
 async function getApp() {
-  if (!process.env.MONGO_URI) {
-    const err = new Error(
-      "MONGO_URI is missing. Add it in Vercel → Project → Settings → Environment Variables."
-    );
-    err.statusCode = 503;
-    throw err;
+  if (initPromise) {
+    await initPromise;
+    return app;
   }
 
-  if (!initPromise) {
-    initPromise = (async () => {
-      await connectDatabase();
-      try {
-        await seedFoodsIfEmpty();
-      } catch (seedErr) {
-        console.error("Seed warning:", seedErr);
-      }
-      app = createApp();
-    })().catch((err) => {
-      initPromise = null;
-      throw err;
-    });
+  if (!process.env.MONGO_URI) {
+    demoMode = true;
+    app = createDemoApp();
+    return app;
   }
+
+  initPromise = (async () => {
+    await connectDatabase();
+    try {
+      await seedFoodsIfEmpty();
+    } catch (seedErr) {
+      console.error("Seed warning:", seedErr);
+    }
+    app = createApp();
+  })().catch((err) => {
+    initPromise = null;
+    console.error("Mongo init failed, falling back to demo mode:", err);
+    demoMode = true;
+    app = createDemoApp();
+  });
 
   await initPromise;
   return app;
@@ -47,7 +52,7 @@ export default async function handler(req, res) {
   } catch (err) {
     console.error("API handler error:", err);
     if (!res.headersSent) {
-      res.status(err.statusCode || 500).json({
+      res.status(500).json({
         success: false,
         message: err.message || "Internal server error",
       });
